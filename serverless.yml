@@ -1,0 +1,55 @@
+service: wazuh-crud
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+  profile: defaultTraining
+  memorySize: 1024
+  timeout: 30
+
+functions:
+  getTasks:
+    handler: src/handlers/getTasks.getTasks
+    layers:
+      - arn:aws:lambda:us-east-1:983705231028:layer:dev-WazuhCrudDependenciesLayer:1
+    events:
+      - httpApi:
+          path: /tasks
+          method: GET
+  getSingleTask:
+    handler: src/handlers/getSingleTask.getSingleTask
+    layers:
+      - arn:aws:lambda:us-east-1:983705231028:layer:dev-WazuhCrudDependenciesLayer:1
+    events:
+      - httpApi:
+          path: /tasks/{id}
+          method: GET
+  getAllUsers:
+    handler: src/handlers/getAllUsers.getAllUsers
+    layers:
+      - arn:aws:lambda:us-east-1:983705231028:layer:dev-WazuhCrudDependenciesLayer:1
+    events:
+      - httpApi:
+          path: /users
+          method: GET
+  getSingleUser:
+    handler: src/handlers/getSingleUser.getSingleUser
+    layers:
+      - arn:aws:lambda:us-east-1:983705231028:layer:dev-WazuhCrudDependenciesLayer:1
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: GET
+  getTasksByUser:
+    handler: src/handlers/getTasksByUser.getTasksByUser
+    layers:
+      - arn:aws:lambda:us-east-1:983705231028:layer:dev-WazuhCrudDependenciesLayer:1
+    events:
+      - httpApi:
+          path: /users/{id}/tasks
+          method: GET
+plugins:
+  - serverless-offline

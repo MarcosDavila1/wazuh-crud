@@ -1,0 +1,293 @@
+openapi: 3.0.1
+info:
+  title: Wazuh Tasks/Users - RESTful API 
+  description: Esta RESTful API se encarga de obtener las tareas y los usuarios de la base de datos de usuarios y de tareas para el challenge técnico de Wazuh.
+  version: 1.0.0
+servers:
+  - url: https://pdza3frdic.execute-api.us-east-1.amazonaws.com/
+tags:
+  - name: Tasks
+    description: Filtrar tareas
+  - name: Users
+    description: Filtrar usuarios
+paths:
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Obtenemos la lista de todas las tareas de la BD.
+      parameters:
+        - name: completed
+          in: query
+          description: Filtra por las tareas que se encuentran completadas.
+          required: false
+          schema: 
+            type: boolean
+            default: null
+        - name: title
+          in: query
+          description: Filtra por las tareas que en una parte del titulo contienen el string pasado por parametro.
+          required: false
+          schema: 
+            type: string
+            default: null
+      responses:
+        '200':
+          description: (OK) Se obtuvo respuesta con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: number
+                    example: 200
+                  data:
+                    type: object
+                    example:
+                      total_items: 200
+                      data: [{
+                        "user_id": 1,
+                        "id": 1,
+                        "title": "delectus aut autem",
+                        "completed": false
+                    },
+                    {
+                        "user_id": 1,
+                        "id": 2,
+                        "title": "quis ut nam facilis et officia qui",
+                        "completed": false
+                    },]
+        '400':
+          description: Bad Request or Not found
+        '500':
+          description: Internal server error
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Obtenemos una tarea en especifico segun su id.
+      parameters:
+        - name: id
+          in: path
+          description: Id de la tarea a buscar.
+          required: true
+          schema: 
+            type: number
+      responses:
+        '200':
+          description: (OK) Se obtuvo respuesta con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: number
+                    example: 200
+                  data:
+                    type: object
+                    example:
+                      data: {
+                        "user_id": 1,
+                        "id": 5,
+                        "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
+                        "completed": false
+                    }
+        '400':
+          description: Bad Request or Not found
+        '500':
+          description: Internal server error
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Obtenemos la lista de todos los usuarios de la BD.
+      responses:
+        '200':
+          description: (OK) Se obtuvo respuesta con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: number
+                    example: 200
+                  data:
+                    type: object
+                    example:
+                      total_items: 10
+                      data: [{
+                        "id": 1,
+                        "name": "Leanne Graham",
+                        "username": "Bret",
+                        "email": "Sincere@april.biz",
+                        "address": {
+                            "street": "Kulas Light",
+                            "suite": "Apt. 556",
+                            "city": "Gwenborough",
+                            "zipcode": "92998-3874",
+                            "geo": {
+                                "lat": "-37.3159",
+                                "lng": "81.1496"
+                            }
+                        },
+                        "phone": "1-770-736-8031 x56442",
+                        "website": "hildegard.org",
+                        "company": {
+                            "name": "Romaguera-Crona",
+                            "catchPhrase": "Multi-layered client-server neural-net",
+                            "bs": "harness real-time e-markets"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "name": "Ervin Howell",
+                        "username": "Antonette",
+                        "email": "Shanna@melissa.tv",
+                        "address": {
+                            "street": "Victor Plains",
+                            "suite": "Suite 879",
+                            "city": "Wisokyburgh",
+                            "zipcode": "90566-7771",
+                            "geo": {
+                                "lat": "-43.9509",
+                                "lng": "-34.4618"
+                            }
+                        },
+                        "phone": "010-692-6593 x09125",
+                        "website": "anastasia.net",
+                        "company": {
+                            "name": "Deckow-Crist",
+                            "catchPhrase": "Proactive didactic contingency",
+                            "bs": "synergize scalable supply-chains"
+                        }
+                    }]
+        '400':
+          description: Bad Request or Not found
+        '500':
+          description: Internal server error
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Obtenemos un usuario en especifico segun su id.
+      parameters:
+        - name: id
+          in: path
+          description: Id del usuario a buscar.
+          required: true
+          schema: 
+            type: number
+      responses:
+        '200':
+          description: (OK) Se obtuvo respuesta con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: number
+                    example: 200
+                  data:
+                    type: object
+                    example: {
+                      "id": 2,
+                      "name": "Ervin Howell",
+                      "username": "Antonette",
+                      "email": "Shanna@melissa.tv",
+                      "address": {
+                          "street": "Victor Plains",
+                          "suite": "Suite 879",
+                          "city": "Wisokyburgh",
+                          "zipcode": "90566-7771",
+                          "geo": {
+                              "lat": "-43.9509",
+                              "lng": "-34.4618"
+                          }
+                      },
+                      "phone": "010-692-6593 x09125",
+                      "website": "anastasia.net",
+                      "company": {
+                          "name": "Deckow-Crist",
+                          "catchPhrase": "Proactive didactic contingency",
+                          "bs": "synergize scalable supply-chains"
+                      }}
+        '400':
+          description: Bad Request or Not found
+        '500':
+          description: Internal server error
+  /users/{id}/tasks:
+    get:
+      tags:
+        - Users
+      summary: Obtenemos las tareas de un usuario en especifico.
+      parameters:
+        - name: id
+          in: path
+          description: Id del usuario a buscar.
+          required: true
+          schema: 
+            type: number
+        - name: completed
+          in: query
+          description: Filtra por las tareas que se encuentran completadas.
+          required: false
+          schema: 
+            type: boolean
+            default: null
+        - name: title
+          in: query
+          description: Filtra por las tareas que en una parte del titulo contienen el string pasado por parametro.
+          required: false
+          schema: 
+            type: string
+            default: null
+      responses:
+        '200':
+          description: (OK) Se obtuvo respuesta con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  statusCode:
+                    type: number
+                    example: 200
+                  data:
+                    type: object
+                    example: [
+                      {
+                        "user_id": 2,
+                        "id": 21,
+                        "title": "suscipit repellat esse quibusdam voluptatem incidunt",
+                        "completed": false
+                    },
+                    {
+                        "user_id": 2,
+                        "id": 22,
+                        "title": "distinctio vitae autem nihil ut molestias quo",
+                        "completed": true
+                    }
+                  ]
+        '400':
+          description: Bad Request or Not found
+        '500':
+          description: Internal server error
